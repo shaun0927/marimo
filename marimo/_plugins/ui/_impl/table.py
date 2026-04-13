@@ -8,6 +8,7 @@ from typing import (
     Any,
     Final,
     Literal,
+    Union,
     cast,
 )
 
@@ -204,11 +205,13 @@ def get_default_table_max_columns() -> int:
         return ctx.marimo_config["display"]["default_table_max_columns"]
 
 
+# Use Union[] instead of X | Y in class base — see altair_transformer.py
+# for rationale.
 @mddoc
 class table(
     UIElement[
-        list[str] | list[int] | list[dict[str, Any]],
-        list[JSONType] | IntoDataFrame | list[TableCell],
+        Union[list[str], list[int], list[dict[str, Any]]],
+        Union[list[JSONType], IntoDataFrame, list[TableCell]],
     ]
 ):
     """A table component with selectable rows.
